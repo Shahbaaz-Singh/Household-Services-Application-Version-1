@@ -9,18 +9,23 @@ These are the mandatory frameworks on which the project is built:
 - **Jinja2 templates + Bootstrap** for HTML generation and styling
 - **SQLite** for data storage
 
+## Project Statement
+
+The project statement for this project can be found at:
+
+[https://docs.google.com/document/d/1waf_CKBLk25fkwF-R4KS7wLq4KTIPhUcAtj6if5N-zo/pub](#)
+
 ## Project Report
 
 A detailed project report, including a comprehensive overview, technical implementation, and future enhancements, can be found at:
 
-[Project Report Link](#)
+[https://github.com/Shahbaaz-Singh/Household-Services-Application-Version-1/blob/main/Project%20Report.pdf](#)
 
 The report contains:
 - **Project Overview**: Goals, scope, and purpose of the application
 - **Technical Implementation**: Frameworks used, system architecture, and database design
 - **API Endpoints Documentation**: How different users interact with the system
 - **Demo Video Links**: Showcasing the features in action
-- **Future Enhancements**: Possible upgrades and scalability improvements
 
 ## Running the Project
 
