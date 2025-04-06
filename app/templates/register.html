@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .register-container {
+            max-width: 600px;  /* Reduced the width to make the form more user-friendly */
+            margin: 20px auto;  /* Center it horizontally with some spacing */
+            padding: 15px;  /* Slightly reduced padding for a more compact look */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5 register-container">
+        <h2 class="text-primary text-center">Register</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container mb-4">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('main.register') }}" enctype="multipart/form-data" class="border p-4 rounded bg-light shadow-sm">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ form.username.label(class="fw-bold") }}
+                {{ form.username(class="form-control") }}
+                {% for error in form.username.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.password.label(class="fw-bold") }}
+                {{ form.password(class="form-control") }}
+                {% for error in form.password.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.confirm_password.label(class="fw-bold") }}
+                {{ form.confirm_password(class="form-control") }}
+                {% for error in form.confirm_password.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.role.label(class="fw-bold") }}
+                {{ form.role(class="form-select", id="role") }}
+                {% for error in form.role.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.location.label(class="fw-bold") }}
+                {{ form.location(class="form-control") }}
+                {% for error in form.location.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.pin_code.label(class="fw-bold") }}
+                {{ form.pin_code(class="form-control") }}
+                {% for error in form.pin_code.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.phone_number.label(class="fw-bold") }}
+                {{ form.phone_number(class="form-control") }}
+                {% for error in form.phone_number.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.email.label(class="fw-bold") }}
+                {{ form.email(class="form-control") }}
+                {% for error in form.email.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.address.label(class="fw-bold") }}
+                {{ form.address(class="form-control") }}
+                {% for error in form.address.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3" id="expertise-field" style="display: none;">
+                {{ form.expertise.label(class="fw-bold") }}
+                {{ form.expertise(class="form-control") }}
+                {% for error in form.expertise.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-3" id="documents-field" style="display: none;">
+                {{ form.documents.label(class="fw-bold") }}
+                {{ form.documents(class="form-control-file") }}
+                {% for error in form.documents.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">{{ form.submit.label }}</button>
+        </form>
+
+        <div class="mt-3 text-center">
+            <a href="{{ url_for('main.index') }}" class="text-decoration-none">Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const roleSelect = document.getElementById('role');
+            const expertiseField = document.getElementById('expertise-field');
+            const documentsField = document.getElementById('documents-field');
+
+            function toggleFields() {
+                if (roleSelect.value === 'professional') {
+                    expertiseField.style.display = 'block';
+                    documentsField.style.display = 'block';
+                } else {
+                    expertiseField.style.display = 'none';
+                    documentsField.style.display = 'none';
+                }
+            }
+
+            toggleFields();
+            roleSelect.addEventListener('change', toggleFields);
+        });
+    </script>
+</body>
+</html>

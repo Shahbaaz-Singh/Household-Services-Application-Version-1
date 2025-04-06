@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <div class="text-center">
+            <h1 class="text-primary">Welcome to Household Services</h1>
+            <p class="text-muted">Your one-stop solution for your household needs</p>
+
+            <div class="mt-4">
+                <a href="{{ url_for('main.admin_login') }}" class="btn btn-primary btn-lg m-2">Admin Login</a>
+                <a href="{{ url_for('main.professional_login') }}" class="btn btn-secondary btn-lg m-2">Professional Login</a>
+                <a href="{{ url_for('main.customer_login') }}" class="btn btn-info btn-lg m-2">Customer Login</a>   
+                <a href="{{ url_for('main.register') }}" class="btn btn-outline-primary btn-lg m-2">Register as a new user</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

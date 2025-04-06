@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Customer Info</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container mb-4">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="row mb-3">
+            <div class="col">
+                <a href="{{ url_for('main.admin_dashboard') }}" class="btn btn-info w-100 mb-2">Dashboard</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.customer_info') }}" class="btn btn-info w-100 mb-2">View Customer Info</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.professional_info') }}" class="btn btn-info w-100 mb-2">View Professional Info</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.services') }}" class="btn btn-info w-100 mb-2">View Services</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.admin_logout') }}" class="btn btn-danger w-100 mb-2">Logout</a>
+            </div>
+        </div>
+
+        <h2>Customers</h2>
+
+        <form action="{{ url_for('main.customer_info') }}" method="POST" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="search_query" class="form-control" placeholder="Search by username" value="{{ search_query }}">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+
+        <ul class="list-group mb-4">
+            {% for customer in customers %}
+                <li class="list-group-item">
+                    {{ customer.username }} (Customer)
+                    {% if not customer.is_blocked %}
+                        - <form action="{{ url_for('main.block_user', id=customer.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Block</button>
+                        </form>
+                    {% else %}
+                        - <form action="{{ url_for('main.unblock_user', id=customer.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-success btn-sm">Unblock</button>
+                        </form>
+                    {% endif %}
+
+                    <button class="btn btn-info btn-sm ms-2 toggle-info" data-target="info-{{ customer.id }}">View More Info</button>
+                    <div class="info-content" id="info-{{ customer.id }}" style="display:none;">
+                        <ul>
+                            <li><strong>Location:</strong> {{ customer.location }}</li>
+                            <li><strong>Pin Code:</strong> {{ customer.pin_code }}</li>
+                            <li><strong>Phone Number:</strong> {{ customer.phone_number }}</li>
+                            <li><strong>Email:</strong> {{ customer.email }}</li>
+                            <li><strong>Address:</strong> {{ customer.address }}</li>
+                        </ul>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+    <script>
+        document.querySelectorAll('.toggle-info').forEach(button => {
+            button.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-target');
+                const infoDiv = document.getElementById(targetId);
+                if (infoDiv.style.display === 'none' || infoDiv.style.display === '') {
+                    infoDiv.style.display = 'block';
+                    this.innerHTML = 'Hide Info';
+                } else {
+                    infoDiv.style.display = 'none';
+                    this.innerHTML = 'View More Info';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

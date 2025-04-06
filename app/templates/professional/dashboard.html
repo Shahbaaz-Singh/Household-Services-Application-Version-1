@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Professional Dashboard</h1>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container mb-4">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="row mb-3">
+            <div class="col">
+                <a href="{{ url_for('main.professional_dashboard') }}" class="btn btn-info w-100 mb-2">
+                    Dashboard
+                </a>
+            </div>
+        
+            <div class="col">
+                <a href="{{ url_for('main.pending_requests') }}" class="btn btn-info w-100 mb-2">
+                    View Pending Requests
+                </a>
+            </div>
+        
+            <div class="col">
+                <a href="{{ url_for('main.accepted_requests') }}" class="btn btn-info w-100 mb-2">
+                    View Accepted Requests
+                </a>
+            </div>
+        
+            <div class="col">
+                <a href="{{ url_for('main.professional_logout') }}" class="btn btn-danger w-100 mb-2">
+                    Logout
+                </a>
+            </div>
+        </div>
+
+        <h2>{{ professional.username }}'s Profile</h2>
+
+        <h3>Rating: {{ professional.rating }} / 5</h3>
+        <h4>Number of Reviews: {{ professional.num_reviews }}</h4>
+
+        <div class="chart-container mt-4">
+            <h2>Service Request Statistics</h2>
+            {% if img_base64 %}
+            <img src="data:image/png;base64,{{ img_base64 }}" alt="Request Statistics" class="img-fluid">
+            {% else %}
+            <p>No Service Request Statistics available to display.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>

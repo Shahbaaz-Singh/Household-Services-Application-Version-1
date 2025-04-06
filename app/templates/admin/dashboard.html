@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Admin Dashboard</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container mb-4">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="row mb-3">
+            <div class="col">
+                <a href="{{ url_for('main.admin_dashboard') }}" class="btn btn-info w-100 mb-2">Dashboard</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.customer_info') }}" class="btn btn-info w-100 mb-2">View Customer Info</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.professional_info') }}" class="btn btn-info w-100 mb-2">View Professional Info</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.services') }}" class="btn btn-info w-100 mb-2">View Services</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.admin_logout') }}" class="btn btn-danger w-100 mb-2">Logout</a>
+            </div>
+        </div>
+
+        <div class="graph-container">
+            <h2>Dashboard Analytics</h2>
+            {% if img_base64 %}
+            <img src="data:image/png;base64,{{ img_base64 }}" alt="Admin Dashboard Analysis" class="img-fluid">
+            {% else %}
+            <p>No Admin Dashboard Analysis available to display.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>

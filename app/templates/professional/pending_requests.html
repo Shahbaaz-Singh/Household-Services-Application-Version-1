@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Pending Requests</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container mb-4">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <div class="row mb-3">
+            <div class="col">
+                <a href="{{ url_for('main.professional_dashboard') }}" class="btn btn-info w-100 mb-2">
+                    Dashboard
+                </a>
+            </div>
+        
+            <div class="col">
+                <a href="{{ url_for('main.pending_requests') }}" class="btn btn-info w-100 mb-2">
+                    View Pending Requests
+                </a>
+            </div>
+        
+            <div class="col">
+                <a href="{{ url_for('main.accepted_requests') }}" class="btn btn-info w-100 mb-2">
+                    View Accepted Requests
+                </a>
+            </div>
+        
+            <div class="col">
+                <a href="{{ url_for('main.professional_logout') }}" class="btn btn-danger w-100 mb-2">
+                    Logout
+                </a>
+            </div>
+        </div>
+
+        <h2>Pending Service Requests</h2>
+        <ul class="list-group">
+            {% for request in pending_requests %}
+                <li class="list-group-item">
+                    <strong>Service:</strong> {{ request.associated_service.name }} <br>
+                    <strong>Customer:</strong> {{ request.requesting_customer.username }} <br>
+
+                    <form action="{{ url_for('main.accept_service_request', id=request.id) }}" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-success btn-sm">Accept Service</button>
+                    </form>
+
+                    <form action="{{ url_for('main.reject_service_request', id=request.id) }}" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-danger btn-sm">Reject Service</button>
+                    </form>
+
+                    <button class="btn btn-sm btn-secondary" type="button" data-bs-toggle="collapse" 
+                            data-bs-target="#service-info-{{ request.id }}" aria-expanded="false" aria-controls="service-info-{{ request.id }}">
+                        View Service Request Details
+                    </button>
+
+                    <div class="collapse mt-2" id="service-info-{{ request.id }}">
+                        <div class="card card-body">
+                            <ul>
+                                <li><strong>Service Name:</strong> {{ request.associated_service.name }}</li>
+                                <li><strong>Service Price:</strong> {{ request.associated_service.price }}</li>
+                                <li><strong>Time Required:</strong> {{ request.associated_service.time_required }} minutes</li>
+                                <li><strong>Service Description:</strong> {{ request.associated_service.description }}</li>
+                                <li><strong>Field of Service:</strong> {{ request.associated_service.field_of_service }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

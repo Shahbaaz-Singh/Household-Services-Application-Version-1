@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Search Results</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2 class="text-center text-primary mb-4">Search Results</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container mb-4">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% if results %}
+            <div class="row">
+                {% for service in results %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h3 class="card-title">{{ service.name }}</h3>
+                                <p class="card-text"><strong>Field of Service:</strong> {{ service.field_of_service }}</p>
+                                <p class="card-text"><strong>Price:</strong> {{ service.price }}</p>
+                                <p class="card-text"><strong>Description:</strong> {{ service.description }}</p>
+                                <p class="card-text"><strong>Time Required:</strong> {{ service.time_required }}</p>
+                                
+
+                                <form method="POST" action="{{ url_for('main.request_service') }}" class="mt-3">
+                                    <input type="hidden" name="service_id" value="{{ service.id }}">
+                                    <div class="mb-3">
+                                        <label for="location" class="form-label"><strong>Location (optional):</strong></label>
+                                        <select id="location" name="location" class="form-select">
+                                            <option value="">-- Select Location --</option>
+                                            {% for location in locations %}
+                                                <option value="{{ location }}">{{ location }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="pin_code" class="form-label"><strong>Pin Code (optional):</strong></label>
+                                        <select id="pin_code" name="pin_code" class="form-select">
+                                            <option value="">-- Select Pin Code --</option>
+                                            {% for pincode in pincodes %}
+                                    <option value="{{ pincode }}">{{ pincode }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Request Service</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-danger">No services match your search criteria.</p>
+        {% endif %}
+        <div class="mt-3 text-center">
+            <a href="{{ url_for('main.create_request') }}" class="text-decoration-none">Go Back</a>
+        </div>
+    </div>
+
+</body>
+</html>

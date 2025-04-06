@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Customer Dashboard</h1>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container mb-4">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="row mb-3">
+            <div class="col">
+                <a href="{{ url_for('main.customer_dashboard') }}" class="btn btn-info w-100 mb-2">Dashboard</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.create_request') }}" class="btn btn-info w-100 mb-2">Create New Service Request</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.service_requests') }}" class="btn btn-info w-100 mb-2">View Your Service Requests</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.customer_logout') }}" class="btn btn-danger w-100 mb-2">Logout</a>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <h3>Customer Information</h3>
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Name:</strong> {{ current_user.username }}</li>
+                    <li class="list-group-item"><strong>Location:</strong> {{ current_user.location }}</li>
+                    <li class="list-group-item"><strong>Pin Code:</strong> {{ current_user.pin_code }}</li>
+                    <li class="list-group-item"><strong>Phone Number:</strong> {{ current_user.phone_number }}</li>
+                    <li class="list-group-item"><strong>Email:</strong> {{ current_user.email }}</li>
+                    <li class="list-group-item"><strong>Address:</strong> {{ current_user.address }}</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row my-5">
+            <div class="col-md-6">
+                <h2>Service Request Status Analysis</h2>
+                {% if img_base64 %}
+                    <img src="data:image/png;base64,{{ img_base64 }}" alt="Request Status Analysis Chart" class="img-fluid">
+                {% else %}
+                    <p>No service request data available to display.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+
+    </div>
+
+</body>
+</html>

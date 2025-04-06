@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Services</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container mb-4">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="row mb-3">
+            <div class="col">
+                <a href="{{ url_for('main.admin_dashboard') }}" class="btn btn-info w-100 mb-2">Dashboard</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.customer_info') }}" class="btn btn-info w-100 mb-2">View Customer Info</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.professional_info') }}" class="btn btn-info w-100 mb-2">View Professional Info</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.services') }}" class="btn btn-info w-100 mb-2">View Services</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.admin_logout') }}" class="btn btn-danger w-100 mb-2">Logout</a>
+            </div>
+        </div>
+
+        <h2>Services</h2>
+        <a href="{{ url_for('main.create_service') }}" class="btn btn-primary mb-3">Create New Service</a>
+
+        <ul class="list-group mb-4">
+            {% for service in services %}
+            <li class="list-group-item">
+                <div class="d-flex align-items-center justify-content-start">
+                    <span class="me-3">{{ service.name }}</span>
+
+                    <form action="{{ url_for('main.delete_service', id=service.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm ms-2" onclick="return confirm('Are you sure you want to delete this service?');">Delete</button>
+                    </form>
+                    <a href="{{ url_for('main.update_service', id=service.id) }}" class="btn btn-warning btn-sm ms-2">Update Service</a>
+                    <button class="btn btn-info btn-sm ms-2 toggle-info" data-target="info-{{ service.id }}">View More Info</button>
+                </div>
+            
+                <div class="info-content" id="info-{{ service.id }}" style="display:none;">
+                    <ul>
+                        <li><strong>Field of Service:</strong> {{ service.field_of_service }}</li>
+                        <li><strong>Price:</strong> {{ service.price }}</li>
+                        <li><strong>Description:</strong> {{ service.description }}</li>
+                        <li><strong>Time Required:</strong> {{ service.time_required }}</li>
+                    </ul>
+                </div>
+            </li>            
+            {% endfor %}
+        </ul>
+    </div>
+    <script>
+        document.querySelectorAll('.toggle-info').forEach(button => {
+            button.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-target');
+                const infoDiv = document.getElementById(targetId);
+                if (infoDiv.style.display === 'none' || infoDiv.style.display === '') {
+                    infoDiv.style.display = 'block';
+                    this.innerHTML = 'Hide Info';
+                } else {
+                    infoDiv.style.display = 'none';
+                    this.innerHTML = 'View More Info';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

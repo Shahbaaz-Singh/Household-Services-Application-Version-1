@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4">View Service Requests</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert-container mb-4">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="row mb-3">
+            <div class="col">
+                <a href="{{ url_for('main.customer_dashboard') }}" class="btn btn-info w-100 mb-2">Dashboard</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.create_request') }}" class="btn btn-info w-100 mb-2">Create New Service Request</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.service_requests') }}" class="btn btn-info w-100 mb-2">View Your Service Requests</a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('main.customer_logout') }}" class="btn btn-danger w-100 mb-2">Logout</a>
+            </div>
+        </div>
+
+    <h2>Your Service Requests</h2>
+    {% if service_requests %}
+        <ul class="list-group">
+            {% for request in service_requests %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                    <strong>Service Request Name:</strong> {{ request.associated_service.name }} <br>
+                    <strong>Status:</strong> 
+                        {% if request.service_status == "rejected" %}
+                            Pending
+                        {% else %}
+                            {{ request.service_status }}
+                        {% endif %}
+                        <br>
+
+                        <button class="btn btn-info btn-sm mt-2" type="button" data-bs-toggle="collapse" 
+                                data-bs-target="#service-info-{{ request.id }}" aria-expanded="false" 
+                                aria-controls="service-info-{{ request.id }}">
+                            View Service Request Details
+                        </button>
+
+                        <div class="collapse mt-2" id="service-info-{{ request.id }}">
+                            <div class="card card-body">
+                                <ul>
+                                    <li><strong>Service Name:</strong> {{ request.associated_service.name }}</li>
+                                    <li><strong>Service Price:</strong> {{ request.associated_service.price }}</li>
+                                    <li><strong>Time Required:</strong> {{ request.associated_service.time_required }} minutes</li>
+                                    <li><strong>Service Description:</strong> {{ request.associated_service.description }}</li>
+                                    <li><strong>Field of Service:</strong> {{ request.associated_service.field_of_service }}</li>
+                                    <li><strong>Date of Request:</strong> {{ request.date_of_request.strftime('%d-%m-%Y %H:%M') }}</li>
+                                    <li><strong>Date of Acceptance:</strong> 
+                                        {% if request.date_of_acceptance %}
+                                            {{ request.date_of_acceptance.strftime('%d-%m-%Y %H:%M') }}
+                                        {% else %}
+                                            Not yet accepted
+                                        {% endif %}
+                                    </li>
+                                    <li><strong>Date of Completion:</strong> 
+                                        {% if request.date_of_acceptance %}
+                                            {{ request.date_of_acceptance.strftime('%d-%m-%Y %H:%M') }}
+                                        {% else %}
+                                            Not yet completed
+                                        {% endif %}
+                                    </li>
+                                    <li><strong>Remarks:</strong> {{ request.remarks }} </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        {% if request.assigned_professional %}
+                            <button class="btn btn-info btn-sm mt-2" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#professional-details-{{ request.id }}" aria-expanded="false" 
+                                    aria-controls="professional-details-{{ request.id }}">
+                                Show Professional Details
+                            </button>
+                            <div class="collapse mt-2" id="professional-details-{{ request.id }}">
+                                <div class="card card-body">
+                                    <ul>
+                                        <li><strong>Accepted By:</strong> {{ request.assigned_professional.username }}</li>
+                                        <li><strong>Professional Rating:</strong> {{ request.assigned_professional.rating }} / 5</li>
+                                        <li><strong>Number of Reviews:</strong> {{ request.assigned_professional.num_reviews }}</li>
+                                        <li><strong>Phone Number:</strong> {{ request.assigned_professional.phone_number }}</li>
+                                        <li><strong>Email:</strong> {{ request.assigned_professional.email }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        {% else %}
+                            <p class="text-muted">This request is not yet accepted by a professional.</p>
+                        {% endif %}
+
+                    <form action="{{ url_for('main.update_request', id=request.id) }}" method="POST" class="mt-2">
+                        <label for="remarks-{{ request.id }}" class="form-label">Update Remarks:</label>
+                        <input type="text" id="remarks-{{ request.id }}" name="remarks" 
+                               class="form-control" value="{{ request.remarks }}" placeholder="Enter remarks">
+                        <button type="submit" class="btn btn-warning btn-sm mt-2">Update Remarks</button>
+                    </form>
+
+                    <form action="{{ url_for('main.close_request', id=request.id) }}" method="POST" class="mt-2">
+                        <label for="rating-{{ request.id }}" class="form-label">Rate Professional (1-5):</label>
+                        <input type="number" id="rating-{{ request.id }}" name="rating" 
+                               class="form-control" min="1" max="5" placeholder="Enter rating">
+                        <button type="submit" class="btn btn-danger btn-sm mt-2">Close Request</button>
+                    </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">No service requests found.</p>
+    {% endif %}
+</div>
+</body>
+</html>
