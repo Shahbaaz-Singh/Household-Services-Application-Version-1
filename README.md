@@ -13,13 +13,13 @@ These are the mandatory frameworks on which the project is built:
 
 The project statement for this project can be found at:
 
-https://docs.google.com/document/d/1waf_CKBLk25fkwF-R4KS7wLq4KTIPhUcAtj6if5N-zo/pub
+[Project Statement](https://docs.google.com/document/d/1waf_CKBLk25fkwF-R4KS7wLq4KTIPhUcAtj6if5N-zo/pub)
 
 ## Project Report
 
 A detailed project report, including a comprehensive overview, technical implementation, and future enhancements, can be found at:
 
-https://github.com/Shahbaaz-Singh/Household-Services-Application-Version-1/blob/main/Project%20Report.pdf
+[Project Report](https://github.com/Shahbaaz-Singh/Household-Services-Application-Version-1/blob/main/Project%20Report.pdf)
 
 The report contains:
 - **Project Overview**: Goals, scope, and purpose of the application
