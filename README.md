@@ -29,6 +29,8 @@ The report contains:
 
 ## Running the Project
 
+Clone this repository and create a virtual environment in the root folder. Install all the dependencies using the requirements.txt.
+
 To run the project, navigate to the `household-services-application-version-1` directory and execute:
 
 ```sh
